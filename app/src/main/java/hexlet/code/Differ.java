@@ -1,29 +1,37 @@
 package hexlet.code;
 
-
-import java.io.FileReader;
-import java.util.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringJoiner;
+import java.util.TreeSet;
 
 public class Differ {
 
-    public static String generate(String file1, String file2) throws IOException {
-
-        try (FileReader fileReader1 = new FileReader(file1);
-             FileReader fileReader2 = new FileReader(file2)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> firstFile = objectMapper.readValue(fileReader1, new TypeReference<Map<String, Object>>(){});
-            Map<String, Object> secondFile = objectMapper.readValue(fileReader2, new TypeReference<Map<String, Object>>(){});
-            Set<String> keys = new TreeSet<>(firstFile.keySet());
-            keys.addAll(secondFile.keySet());
-            String result = getResultString(keys, firstFile, secondFile);
-            return result;
+    public static String generate(Path file1, Path file2) throws Exception {
+        if (!Files.exists(file1)) {
+            throw new Exception("File " + file1 + " doesn't exist.");
         }
+        if (!Files.exists(file2)) {
+            throw new Exception("File " + file2 + " doesn't exist.");
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> firstFile = objectMapper.readValue(file1.toFile(),
+                    new TypeReference<Map<String, Object>>() { });
+        Map<String, Object> secondFile = objectMapper.readValue(file2.toFile(),
+                    new TypeReference<Map<String, Object>>() { });
+        Set<String> keys = new TreeSet<>(firstFile.keySet());
+        keys.addAll(secondFile.keySet());
+        String result = getResultString(keys, firstFile, secondFile);
+        return result;
     }
-    private static String getResultString(Set<String> keys, Map<String, Object> firstFile, Map<String, Object> secondFile) {
+    private static String getResultString(Set<String> keys, Map<String, Object> firstFile,
+                                          Map<String, Object> secondFile) {
+
         StringJoiner resultStringJoiner = new StringJoiner("\n", "{\n", "\n}");
         for (String key : keys) {
             if (!firstFile.containsKey(key)) {
