@@ -1,18 +1,35 @@
+.DEFAULT_GOAL := build-run
 run-dist:
 	./app/build/install/app/bin/app
 
-run-dist-valid:
-	./app/build/install/app/bin/app ./app/src/main/resources/file1.json ./app/src/main/resources/file2.json
-
-report:
-	./app/gradlew jacocoTestReport
-
-test:
-	./app/gradlew test
+clean:
+	make -C app clean
 
 build:
-	./app/gradlew build
+	make -C app build
+
+install:
+	make -C app install
+
+run-dist:
+	make -C run-dist
+
+run:
+	make -C app run
+
+test:
+	make -C app test
+
+report:
+	make -C app report
+
+lint:
+	make -C app lint
+
+update-deps:
+	make -C app update-deps
 
 
+build-run: build run
 
 .PHONY: build
