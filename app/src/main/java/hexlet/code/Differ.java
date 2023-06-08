@@ -1,29 +1,18 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Differ {
 
-    public static String generate(Path file1, Path file2) throws Exception {
-        if (!Files.exists(file1)) {
-            throw new Exception("File " + file1 + " doesn't exist.");
-        }
-        if (!Files.exists(file2)) {
-            throw new Exception("File " + file2 + " doesn't exist.");
-        }
+    public static String generate(File file1, File file2) throws Exception {
+        final TreeMap<String, Object> firstFile = Parser.parser(file1);
+        final TreeMap<String, Object> secondFile = Parser.parser(file2);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> firstFile = objectMapper.readValue(file1.toFile(),
-                    new TypeReference<Map<String, Object>>() { });
-        Map<String, Object> secondFile = objectMapper.readValue(file2.toFile(),
-                    new TypeReference<Map<String, Object>>() { });
         Set<String> keys = new TreeSet<>(firstFile.keySet());
         keys.addAll(secondFile.keySet());
         String result = getResultString(keys, firstFile, secondFile);

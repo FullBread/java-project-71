@@ -1,18 +1,14 @@
-import hexlet.code.Differ;
+package hexlet.code;
+
 import org.junit.jupiter.api.Test;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import java.io.File;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DifferTest {
     @Test
     public void testValid() throws Exception {
-        Path file1 =
-                Paths.get("./src/test/resources/file1.json").toAbsolutePath().normalize();
-        Path file2 =
-                Paths.get("./src/test/resources/file2.json").toAbsolutePath().normalize();
+        File file1 = new File("./src/test/resources/file1.json");
+        File file2 = new File("./src/test/resources/file2.json");
         String expected = """
                              {
                              - follow: false
