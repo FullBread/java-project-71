@@ -4,33 +4,33 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-import java.io.File;
+
 import java.util.concurrent.Callable;
 
-@Command(name = "gendif", mixinStandardHelpOptions = true, version = "gendif v1.0",
+@Command(name = "gendiff", mixinStandardHelpOptions = true,
         description = "Compares two configuration files and shows a difference.")
-public final class App implements Callable<String>  {
 
+public final class App implements Callable<Integer> {
 
-    @Parameters(paramLabel = "filepath1", description = "path to first file")
-    public File file1;
+    @Parameters(index = "0", description = "path to first file")
+    private String filepath1;
 
-    @Parameters(paramLabel = "filepath2", description = "path to second file")
-    public File file2;
+    @Parameters(index = "1", description = "path to second file")
+    private String filepath2;
 
-    @Option(names = {"-f", "--format"}, paramLabel = "format", defaultValue = "stylish",
-            description = "output format [default: stylish]")
+    @Option(names = {"-f", "--format"}, paramLabel = "format",
+            description = "output format [default: stylish]", defaultValue = "stylish")
     private String format;
 
     @Override
-    public String call() throws Exception {
-        Differ.generate(file1, file2);
+    public Integer call() throws Exception {
+        Differ.generate(filepath1, filepath2);
+        System.out.println(Differ.generate(filepath1, filepath2));
         return null;
     }
 
-
-    public static void main(String... args) {
-        int exitCode = new CommandLine(new App()).execute(args);
+    public static void main(String[] args) {
+        final int exitCode = new CommandLine(new App()).execute(args);
         System.exit(exitCode);
     }
 }
