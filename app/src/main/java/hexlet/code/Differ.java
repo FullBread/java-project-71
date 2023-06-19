@@ -1,13 +1,17 @@
 package hexlet.code;
-import hexlet.code.formater.Stylish;
+
 import java.io.File;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 
 public class Differ {
+    public static String generate(String filepath1, String filepath2) throws Exception {
+        final String defaultFormat = "stylish";
+        return generate(filepath1, filepath2, defaultFormat);
+    }
 
-    public static String generate(String file1, String file2) throws Exception {
+    public static String generate(String file1, String file2, String format) throws Exception {
         String absoluteFile1;
         String absoluteFile2;
         if (new File(file1).exists()) {
@@ -27,7 +31,7 @@ public class Differ {
 
         TreeSet<String> keys = new TreeSet<>(firstFile.keySet());
         keys.addAll(secondFile.keySet());
-        return Stylish.format(keys, firstFile, secondFile);
+        return Formatter.choiceFormat(keys, firstFile, secondFile, format);
     }
 
     public static String searchFile(String directory, String fileName) {

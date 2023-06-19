@@ -1,4 +1,6 @@
-package hexlet.code.formater;
+package hexlet.code.format;
+
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.StringJoiner;
 import java.util.TreeMap;
@@ -9,17 +11,14 @@ public class Stylish {
                                 TreeMap<String, Object> secondFile) {
         StringJoiner resultStringJoiner = new StringJoiner("\n", "{\n", "\n}");
         for (String key : keys) {
+            Object firstValue = firstFile.get(key);
+            Object secondValue = secondFile.get(key);
             if (!firstFile.containsKey(key)) {
-                resultStringJoiner.add("+ " + key + ": " + secondFile.get(key));
+                resultStringJoiner.add("+ " + key + ": " + secondValue);
             } else if (!secondFile.containsKey(key)) {
-                resultStringJoiner.add("- " + key + ": " + firstFile.get(key));
+                resultStringJoiner.add("- " + key + ": " + firstValue);
             } else {
-                Object firstValue = firstFile.get(key);
-                Object secondValue = secondFile.get(key);
-                firstValue = firstValue == null ? "null" : firstValue;
-                secondValue = secondValue == null ? "null" : secondValue;
-
-                if (firstValue.equals(secondValue)) {
+                if (!ObjectUtils.notEqual(firstValue, secondValue)) {
                     resultStringJoiner.add("  " + key + ": " + firstValue);
                 } else {
                     resultStringJoiner.add("- " + key + ": " + firstValue)

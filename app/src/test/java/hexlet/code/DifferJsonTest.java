@@ -54,4 +54,26 @@ public class DifferJsonTest {
                              }""";
         assertThat(Differ.generate(file1, file2)).isEqualTo(expected);
     }
+    @Test
+    public void testPlain() throws Exception {
+        final String file1 = "./src/test/resources/nestedFile1.json";
+        final String file2 = "./src/test/resources/nestedFile2.json";
+        final String format = "plain";
+        final String expected = """
+            Property 'chars2' was updated. From [complex value] to false
+            Property 'checked' was updated. From false to true
+            Property 'default' was updated. From null to [complex value]
+            Property 'id' was updated. From 45 to null
+            Property 'key1' was removed
+            Property 'key2' was added with value: 'value2'
+            Property 'numbers2' was updated. From [complex value] to [complex value]
+            Property 'numbers3' was removed
+            Property 'numbers4' was added with value: [complex value]
+            Property 'obj1' was added with value: [complex value]
+            Property 'setting1' was updated. From 'Some value' to 'Another value'
+            Property 'setting2' was updated. From 200 to 300
+            Property 'setting3' was updated. From true to 'none'""";
+
+        assertThat(Differ.generate(file1, file2, format)).isEqualTo(expected);
+    }
 }
