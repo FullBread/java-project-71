@@ -1,7 +1,6 @@
 package hexlet.code.format;
 
 import org.apache.commons.lang3.ObjectUtils;
-
 import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.TreeSet;

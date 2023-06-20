@@ -1,8 +1,8 @@
 package hexlet.code;
 
+import hexlet.code.format.Json;
 import hexlet.code.format.Plain;
 import hexlet.code.format.Stylish;
-
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -12,6 +12,7 @@ public class Formatter {
         return switch (format) {
             case "stylish" -> Stylish.format(keys, firstFile, secondFile);
             case "plain" -> Plain.format(keys, firstFile, secondFile);
+            case "json" -> Json.format(keys, firstFile, secondFile);
             default -> throw new Exception("There is unknown output format.");
         };
     }
