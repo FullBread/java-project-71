@@ -13,15 +13,15 @@ public class Stylish {
             Object firstValue = firstFile.get(key);
             Object secondValue = secondFile.get(key);
             if (!firstFile.containsKey(key)) {
-                resultStringJoiner.add("+ " + key + ": " + secondValue);
+                resultStringJoiner.add("  + " + key + ": " + secondValue);
             } else if (!secondFile.containsKey(key)) {
-                resultStringJoiner.add("- " + key + ": " + firstValue);
+                resultStringJoiner.add("  - " + key + ": " + firstValue);
             } else {
                 if (!ObjectUtils.notEqual(firstValue, secondValue)) {
-                    resultStringJoiner.add("  " + key + ": " + firstValue);
+                    resultStringJoiner.add("    " + key + ": " + firstValue);
                 } else {
-                    resultStringJoiner.add("- " + key + ": " + firstValue)
-                            .add("+ " + key + ": " + secondValue);
+                    resultStringJoiner.add("  - " + key + ": " + firstValue)
+                            .add("  + " + key + ": " + secondValue);
                 }
             }
         }
