@@ -1,52 +1,33 @@
 package hexlet.code;
 
-import java.io.File;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.nio.file.Paths;
+import java.util.Map;
 
 
 public class Differ {
-    public static String generate(String filepath1, String filepath2) throws Exception {
+
+    public static String generate(String path1, String path2) throws Exception {
         final String defaultFormat = "stylish";
-        return generate(filepath1, filepath2, defaultFormat);
+        return generate(path1, path2, defaultFormat);
     }
 
-    public static String generate(String file1, String file2, String format) throws Exception {
-        String absoluteFile1;
-        String absoluteFile2;
-        if (new File(file1).exists()) {
-            absoluteFile1 = file1;
-        } else {
-            absoluteFile1 = searchFile(".", file1);
-        }
-        if (new File(file2).exists()) {
-            absoluteFile2 = file2;
-        } else {
-            absoluteFile2 = searchFile(".", file2);
-        }
+    public static String generate(String path1, String path2, String format) throws Exception {
+        String absolutePath1 = Paths.get(path1).toAbsolutePath().normalize().toString();
+        String absolutePath2 = Paths.get(path2).toAbsolutePath().normalize().toString();
 
+        final Map<String, Object> firstFile = Parser.parse(absolutePath1, getExtension(absolutePath1));
+        final Map<String, Object> secondFile = Parser.parse(absolutePath2, getExtension(absolutePath2));
 
-        final TreeMap<String, Object> firstFile = Parser.parser(new File(absoluteFile1));
-        final TreeMap<String, Object> secondFile = Parser.parser(new File(absoluteFile2));
-
-        TreeSet<String> keys = new TreeSet<>(firstFile.keySet());
-        keys.addAll(secondFile.keySet());
-        return Formatter.choiceFormat(keys, firstFile, secondFile, format);
+        Map<String, Map<String, Object>> diffMap = DiffMap.creatingDiffMap(firstFile, secondFile);
+        return Formatter.choiceFormat(diffMap, format);
     }
 
-    public static String searchFile(String directory, String fileName) {
-        File[] files = new File(directory).listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                String filePath = searchFile(file.getAbsolutePath(), fileName);
-                if (filePath != null) {
-                    return filePath;
-                }
-            } else if (file.getName().equals(fileName)) {
-                return file.getAbsolutePath();
-            }
+    private static String getExtension(String path) {
+        int lastDotIndex = path.lastIndexOf(".");
+        if (lastDotIndex >= 0) {
+            return path.substring(lastDotIndex + 1);
+        } else {
+            return "";
         }
-        return null;
     }
 }
-

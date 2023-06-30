@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
         description = "Compares two configuration files and shows a difference.")
 
 public final class App implements Callable<Integer> {
+    private static final int SUCCESS = 0;
 
     @Parameters(index = "0", description = "path to first file")
     private String filepath1;
@@ -24,9 +25,9 @@ public final class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        Differ.generate(filepath1, filepath2, format);
-        System.out.println(Differ.generate(filepath1, filepath2, format));
-        return null;
+        var result = Differ.generate(filepath1, filepath2, format);
+        System.out.println(result);
+        return SUCCESS;
     }
 
     public static void main(String[] args) {

@@ -1,31 +1,40 @@
 package hexlet.code.format;
 
-import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.StringJoiner;
-import java.util.TreeMap;
-import java.util.TreeSet;
+
 
 public class Plain {
 
-    public static String format(TreeSet<String> keys, TreeMap<String, Object> firstFile,
-                                TreeMap<String, Object> secondFile) {
-        StringJoiner resultStringJoiner = new StringJoiner("\n");
-        for (String key : keys) {
-            var firstValue = firstFile.get(key);
-            var secondValue = secondFile.get(key);
-            if (!firstFile.containsKey(key)) {
-                resultStringJoiner.add("Property '" + key + "'" + " was added with value: "
-                        + getStringValue(secondValue));
-            } else if (!secondFile.containsKey(key)) {
-                resultStringJoiner.add("Property '" + key + "'" + " was removed");
-            } else  if (ObjectUtils.notEqual(firstValue, secondValue)) {
-                resultStringJoiner.add("Property '" + key + "'" + " was updated. From "
-                        + getStringValue(firstValue) + " to " + getStringValue(secondValue));
+    public static String format(Map<String, Map<String, Object>> map) {
+        StringJoiner result = new StringJoiner("\n");
+        for (String key : map.keySet()) {
+            Map<String, Object> innerMap = map.get(key);
+            String status = innerMap.get("Status").toString();
+            var oldValue = getStringValue(innerMap.get("old value"));
+            var newValue = getStringValue(innerMap.get("new value"));
+
+            switch (status) {
+                case "added":
+                    result.add(String.format("Property '%s' was added with value: %s", key, newValue));
+                    break;
+                case "deleted":
+                    result.add(String.format("Property '%s' was removed", key));
+                    break;
+                case "unchanged":
+                    break;
+                case "changed":
+                    result.add(String.format("Property '%s' was updated. From %s to %s", key, oldValue, newValue));
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + status);
+
             }
         }
-        return resultStringJoiner.toString();
+        return result.toString();
     }
 
 

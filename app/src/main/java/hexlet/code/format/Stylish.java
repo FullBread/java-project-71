@@ -1,30 +1,51 @@
 package hexlet.code.format;
 
-import org.apache.commons.lang3.ObjectUtils;
-import java.util.StringJoiner;
-import java.util.TreeMap;
-import java.util.TreeSet;
+
+import java.util.Map;
+
 
 public class Stylish {
-    public static String format(TreeSet<String> keys, TreeMap<String, Object> firstFile,
-                                TreeMap<String, Object> secondFile) {
-        StringJoiner resultStringJoiner = new StringJoiner("\n", "{\n", "\n}");
-        for (String key : keys) {
-            Object firstValue = firstFile.get(key);
-            Object secondValue = secondFile.get(key);
-            if (!firstFile.containsKey(key)) {
-                resultStringJoiner.add("  + " + key + ": " + secondValue);
-            } else if (!secondFile.containsKey(key)) {
-                resultStringJoiner.add("  - " + key + ": " + firstValue);
-            } else {
-                if (!ObjectUtils.notEqual(firstValue, secondValue)) {
-                    resultStringJoiner.add("    " + key + ": " + firstValue);
-                } else {
-                    resultStringJoiner.add("  - " + key + ": " + firstValue)
-                            .add("  + " + key + ": " + secondValue);
+    public static String format(Map<String, Map<String, Object>> map) {
+        StringBuilder result = new StringBuilder("{\n");
+
+        for (String key : map.keySet()) {
+            Map<String, Object> innerMap = map.get(key);
+            String status = innerMap.get("Status").toString();
+            Object oldValue = innerMap.get("old value");
+            Object newValue = innerMap.get("new value");
+
+            switch (status) {
+                case "added" -> {
+                    result.append("  ");
+                    result.append("+ ");
+                    result.append(key).append(": ");
+                    result.append(newValue).append("\n");
                 }
+                case "deleted" -> {
+                    result.append("  ");
+                    result.append("- ");
+                    result.append(key).append(": ");
+                    result.append(oldValue).append("\n");
+                }
+                case "unchanged" -> {
+                    result.append("    ");
+                    result.append(key).append(": ");
+                    result.append(oldValue).append("\n");
+                }
+                case "changed" -> {
+                    result.append("  ");
+                    result.append("- ");
+                    result.append(key).append(": ");
+                    result.append(oldValue).append("\n");
+                    result.append("  ");
+                    result.append("+ ");
+                    result.append(key).append(": ");
+                    result.append(newValue).append("\n");
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + status);
             }
         }
-        return resultStringJoiner.toString();
+        result.append("}");
+        return result.toString();
     }
 }

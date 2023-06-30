@@ -3,16 +3,15 @@ package hexlet.code;
 import hexlet.code.format.Json;
 import hexlet.code.format.Plain;
 import hexlet.code.format.Stylish;
-import java.util.TreeMap;
-import java.util.TreeSet;
+
+import java.util.Map;
 
 public class Formatter {
-    public static String choiceFormat(TreeSet<String> keys, TreeMap<String, Object> firstFile,
-                                    TreeMap<String, Object> secondFile, String format) throws Exception {
+    public static String choiceFormat(Map<String, Map<String, Object>> diffMap, String format) throws Exception {
         return switch (format) {
-            case "stylish" -> Stylish.format(keys, firstFile, secondFile);
-            case "plain" -> Plain.format(keys, firstFile, secondFile);
-            case "json" -> Json.format(keys, firstFile, secondFile);
+            case "stylish" -> Stylish.format(diffMap);
+            case "plain" -> Plain.format(diffMap);
+            case "json" -> Json.format(diffMap);
             default -> throw new Exception("There is unknown output format.");
         };
     }
