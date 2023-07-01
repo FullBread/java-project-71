@@ -10,9 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 class DifferTest {
-    private static String resultJson;
-    private static String resultPlain;
-    private static String resultStylish;
+    private String resultJson;
+    private String resultPlain;
+    private String resultStylish;
 
     private static Path getFixturePath(String fileName) {
         return Paths.get("src", "test", "resources", fileName)
@@ -25,7 +25,7 @@ class DifferTest {
     }
 
     @BeforeAll
-    public static void beforeAll() throws Exception {
+    public void beforeAll() throws Exception {
         resultJson = readFixture("textForTest4.txt");
         resultPlain = readFixture("textForTest3.txt");
         resultStylish = readFixture("textForTest2.txt");

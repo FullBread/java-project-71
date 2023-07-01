@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class YmlParse implements Extension {
+public final class YmlParse implements Extension {
 
     @Override
     public Map<String, Object> parse(String path) throws Exception {

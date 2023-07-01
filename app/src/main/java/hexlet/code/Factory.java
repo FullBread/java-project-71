@@ -3,7 +3,7 @@ package hexlet.code;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Factory {
+public final class Factory {
     private static final Map<String, Class<? extends Extension>> REGISTRY = new HashMap<>();
 
     static {
@@ -11,7 +11,7 @@ public class Factory {
         REGISTRY.put("yml", YmlParse.class);
     }
 
-    public Extension fileToMap(String extension) {
+    public static Extension fileToMap(String extension) {
         Class<? extends Extension> extensionClass = REGISTRY.get(extension);
         if (extensionClass != null) {
             try {
