@@ -13,9 +13,9 @@ public class Plain {
         StringJoiner result = new StringJoiner("\n");
         for (String key : map.keySet()) {
             Map<String, Object> innerMap = map.get(key);
-            String status = innerMap.get("Status").toString();
-            var oldValue = getStringValue(innerMap.get("old value"));
-            var newValue = getStringValue(innerMap.get("new value"));
+            String status = innerMap.get("status").toString();
+            var oldValue = getStringValue(innerMap.get("old_value"));
+            var newValue = getStringValue(innerMap.get("new_value"));
 
             switch (status) {
                 case "added":

@@ -26,9 +26,9 @@ class DifferTest {
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        resultJson = readFixture("textForTest4.txt");
-        resultPlain = readFixture("textForTest3.txt");
+        resultJson = readFixture("textForTest1.txt");
         resultStylish = readFixture("textForTest2.txt");
+        resultPlain = readFixture("textForTest3.txt");
     }
 
     @ParameterizedTest

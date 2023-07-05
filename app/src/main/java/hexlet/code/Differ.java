@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
@@ -15,11 +16,20 @@ public class Differ {
         String absolutePath1 = Paths.get(path1).toAbsolutePath().normalize().toString();
         String absolutePath2 = Paths.get(path2).toAbsolutePath().normalize().toString();
 
-        final Map<String, Object> firstFile = Parser.parse(absolutePath1, getExtension(absolutePath1));
-        final Map<String, Object> secondFile = Parser.parse(absolutePath2, getExtension(absolutePath2));
 
-        Map<String, Map<String, Object>> diffMap = DiffMap.creatingDiffMap(firstFile, secondFile);
-        return Formatter.choiceFormat(diffMap, format);
+        String content1 = Files.readString(Paths.get(absolutePath1));
+        String content2 = Files.readString(Paths.get(absolutePath2));
+
+        ParserFactory factory = new ParserFactory();
+        Parser parser1 = factory.getParser(getExtension(absolutePath1));
+        Parser parser2 = factory.getParser(getExtension(absolutePath2));
+
+
+        final Map<String, Object> data1 = parser1.parse(content1);
+        final Map<String, Object> data2 = parser2.parse(content2);
+
+        Map<String, Map<String, Object>> difference = DiffBuilder.build(data1, data2);
+        return Formatter.choiceFormat(difference, format);
     }
 
     private static String getExtension(String path) {
@@ -27,7 +37,7 @@ public class Differ {
         if (lastDotIndex >= 0) {
             return path.substring(lastDotIndex + 1);
         } else {
-            return "";
+            throw new IllegalArgumentException("Invalid path: " + path);
         }
     }
 }

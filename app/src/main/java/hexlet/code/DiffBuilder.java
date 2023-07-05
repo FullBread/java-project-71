@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class DiffMap {
-    public static Map<String, Map<String, Object>> creatingDiffMap(Map<String, Object> firstFile,
+public class DiffBuilder {
+    public static Map<String, Map<String, Object>> build(Map<String, Object> firstFile,
                                                                    Map<String, Object> secondFile) {
         Set<String> keys = new TreeSet<>();
         Map<String, Map<String, Object>> comparedMap = new LinkedHashMap<>();
@@ -20,27 +20,27 @@ public class DiffMap {
         for (String key : keys) {
             if (!firstFile.containsKey(key)) {
                 Map<String, Object> tempMap = new HashMap<>();
-                tempMap.put("Status", "added");
-                tempMap.put("old value", "");
-                tempMap.put("new value", secondFile.get(key));
+                tempMap.put("status", "added");
+                tempMap.put("old_value", "");
+                tempMap.put("new_value", secondFile.get(key));
                 comparedMap.put(key, tempMap);
             } else if (!secondFile.containsKey(key)) {
                 Map<String, Object> tempMap = new HashMap<>();
-                tempMap.put("Status", "deleted");
-                tempMap.put("old value", firstFile.get(key));
-                tempMap.put("new value", "");
+                tempMap.put("status", "deleted");
+                tempMap.put("old_value", firstFile.get(key));
+                tempMap.put("new_value", "");
                 comparedMap.put(key, tempMap);
             } else {
                 var firstValue = firstFile.get(key);
                 var secondValue = secondFile.get(key);
                 Map<String, Object> tempMap = new HashMap<>();
                 if (!ObjectUtils.notEqual(firstValue, secondValue)) {
-                    tempMap.put("Status", "unchanged");
+                    tempMap.put("status", "unchanged");
                 } else {
-                    tempMap.put("Status", "changed");
+                    tempMap.put("status", "changed");
                 }
-                tempMap.put("old value", firstValue);
-                tempMap.put("new value", secondValue);
+                tempMap.put("old_value", firstValue);
+                tempMap.put("new_value", secondValue);
                 comparedMap.put(key, tempMap);
 
             }

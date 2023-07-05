@@ -4,18 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
-import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
-public final class YmlParse implements Extension {
+public final class YmlParser implements Parser {
 
     @Override
-    public Map<String, Object> parse(String path) throws Exception {
-        File ymlFile = new File(path);
+    public Map<String, Object> parse(String content) throws Exception {
         final ObjectMapper mapper = new YAMLMapper();
         final TreeMap<String, Object> parseData;
-        parseData = mapper.readValue(ymlFile, new TypeReference<>() {
+        parseData = mapper.readValue(content, new TypeReference<>() {
         });
         return parseData;
     }

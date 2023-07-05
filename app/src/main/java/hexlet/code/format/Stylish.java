@@ -10,9 +10,9 @@ public class Stylish {
 
         for (String key : map.keySet()) {
             Map<String, Object> innerMap = map.get(key);
-            String status = innerMap.get("Status").toString();
-            Object oldValue = innerMap.get("old value");
-            Object newValue = innerMap.get("new value");
+            String status = innerMap.get("status").toString();
+            Object oldValue = innerMap.get("old_value");
+            Object newValue = innerMap.get("new_value");
 
             switch (status) {
                 case "added" -> {
@@ -42,7 +42,7 @@ public class Stylish {
                     result.append(key).append(": ");
                     result.append(newValue).append("\n");
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + status);
+                default -> throw new RuntimeException("Unexpected value: " + status);
             }
         }
         result.append("}");

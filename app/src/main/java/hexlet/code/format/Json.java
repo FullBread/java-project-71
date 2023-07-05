@@ -14,32 +14,9 @@ public class Json {
 
         for (String key : map.keySet()) {
             Map<String, Object> innerMap = map.get(key);
-            String status = innerMap.get("Status").toString();
-            var oldValue = String.valueOf(innerMap.get("old value"));
-            var newValue = String.valueOf(innerMap.get("new value"));
-            switch (status) {
-                case "added":
-                    resultJson.put("+ " + key, newValue);
-                    break;
-                case "deleted":
-                    resultJson.put("- " + key, oldValue);
-
-                    break;
-                case "unchanged":
-                    resultJson.put(key, oldValue);
-
-                    break;
-                case "changed":
-                    resultJson.put("- " + key, oldValue);
-                    resultJson.put("+ " + key, newValue);
-
-                    break;
-
-                default:
-                    throw new IllegalStateException("Unexpected value: " + status);
-            }
+            String status = innerMap.get("status").toString();
+            resultJson.put(key, status);
         }
         return result.writeValueAsString(resultJson);
     }
-
 }

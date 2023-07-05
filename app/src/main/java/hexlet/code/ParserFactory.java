@@ -3,16 +3,16 @@ package hexlet.code;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Factory {
-    private static final Map<String, Class<? extends Extension>> REGISTRY = new HashMap<>();
+public final class ParserFactory {
+    private static final Map<String, Class<? extends Parser>> REGISTRY = new HashMap<>();
 
     static {
-        REGISTRY.put("json", JsonParse.class);
-        REGISTRY.put("yml", YmlParse.class);
+        REGISTRY.put("json", JsonParser.class);
+        REGISTRY.put("yml", YmlParser.class);
     }
 
-    public static Extension fileToMap(String extension) {
-        Class<? extends Extension> extensionClass = REGISTRY.get(extension);
+    public static Parser getParser(String extension) {
+        Class<? extends Parser> extensionClass = REGISTRY.get(extension);
         if (extensionClass != null) {
             try {
                 return extensionClass.getDeclaredConstructor().newInstance();
